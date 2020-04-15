@@ -2,8 +2,11 @@
 
 # Welcome!
 
-Here I will host some notebooks for illustrating some useful tools for neuroimaging in python.
+Here I will host some notebooks for illustrating some useful tools for fmri data processing in python. Specifically, nipype, nilearn and nibabel. These all sit in the [nipy](https://nipy.org/) family of packages.
+
 Each of these I will accompany with a set of slides.
+
+I have also provided some general readmes on why I like to use [python](/PYTHON) and [nipype](/NIPYPE) and [nilearn/nibabel](/NILEARN & NIBABEL).
 
 ## Notebooks
 

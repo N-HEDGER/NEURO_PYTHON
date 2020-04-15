@@ -100,10 +100,10 @@ One nice feature of the workflow is that it is fully customised - dcm2nii is emp
 
 ## Relation to fmriprep
 
-fmriprep is a popular application for pre-processing fmri data that uses a nipype framework. It is very good. In fact, it is so robust that it almost renders moot the idea of trying to create your own pipelines.
+fmriprep is a popular application for pre-processing fmri data that uses a nipype framework. It is very good. In fact, it is so robust that it almost renders moot the idea of trying to re-create the pre-processing stages that it does.
 
 However, fmriprep is minimal, by design. There may still be further stages of pre-processing that you might like to perform that fmriprep does not handle (detrending, smoothing, converting to percent signal change, averaging across runs etc). 
 
-nipype offers a flexible way of doing this. 
+nipype offers a very flexible and powerful way of doing this. 
 
 

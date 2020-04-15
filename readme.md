@@ -6,7 +6,7 @@ Here I will host some notebooks for illustrating some useful tools for fmri data
 
 Each of these I will accompany with a set of slides.
 
-I have also provided some general readmes on why I like to use [python](/PYTHON) and [nipype](/NIPYPE) and [nilearn/nibabel](/NILEARN & NIBABEL).
+I have also provided some general readmes on why I like to use [python](/PYTHON) and [nipype](/NIPYPE) and [nilearn/nibabel](/NILEARN_NIBABEL).
 
 ## Notebooks
 

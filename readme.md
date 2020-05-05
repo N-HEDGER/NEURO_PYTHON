@@ -14,5 +14,5 @@ I have also provided some general readmes on why I like to use [python](/PYTHON)
 | Chapter | Notebook | Description | Link to slides |
 | --- | --- | --- | --- |
 | 1 | [Nipype_1](/Nipype_1.ipynb) | An introduction to nipype with a minimal example. | *Placeholder* |
-| 2 | [Nilearn_1](/Nilearn_1.ipynb) | An introduction to manipulating image volumes using nilearn. | *Placeholder* |
+| 2 | [Data_handling](/Python_data_handling.ipynb) | An introduction to manipulating image volumes using nibabel and nilearn. | *Placeholder* |
 ***

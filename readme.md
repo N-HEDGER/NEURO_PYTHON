@@ -1,8 +1,10 @@
-![alt text](https://i.imgbox.com/QqCVWa0v.png "Title")
+![alt text](http://imgbox.com/iRb0QxpH "Title")
 
 # Welcome!
 
-Here I will host some notebooks for illustrating some useful tools for fmri data processing in python. Specifically, nipype, nilearn and nibabel. These all sit in the [nipy](https://nipy.org/) family of packages.
+Here I will host some notebooks for illustrating some useful tools for fmri data processing in python. 
+
+Additionally, this repo will also be be used to host some useful functions.
 
 Each of these I will accompany with a set of slides.
 
@@ -13,6 +15,9 @@ I have also provided some general readmes on why I like to use [python](/PYTHON)
 ### Index
 | Chapter | Notebook | Description | Link to slides |
 | --- | --- | --- | --- |
-| 1 | [Nipype_1](/Nipype_1.ipynb) | An introduction to nipype with a minimal example. | *Placeholder* |
-| 2 | [Data_handling](/Python_data_handling.ipynb) | An introduction to manipulating image volumes using nibabel and nilearn. | *Placeholder* |
+| 1 | [Nipype_1](/NIPYPE/Nipype_1.ipynb) | An introduction to nipype with a minimal example. | *Placeholder* |
+| 2 | [Data_handling](/NILEARN_NIBABEL/Python_data_handling.ipynb) | An introduction to manipulating image volumes using nibabel and nilearn. | *Placeholder* |
+| 3 | [Using fmriprep & SLURM]() | A brief guide to using fmriprep on the computing cluster | *Placeholder* |
+| 4 | [Pycortex]() | A brief notebook that showcases the wonderful plotting functions of pycortex | *Placeholder* |
+
 ***

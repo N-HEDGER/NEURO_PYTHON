@@ -149,7 +149,7 @@ touch /out/test
 ls /out
 ```
 
-Here, you should see that you were able to write a file called 'test'. Id this works, then you have write permissions.
+Here, you should see that you were able to write a file called 'test'. If this works, then you have write permissions.
 
 Now delete this and exit.
 
@@ -163,13 +163,19 @@ exit
 
 In the same directory as this readme, you will find 2 scripts.
 
-Git is installed on the cluster, and so you will be able to pull versions of these scripts via:
+You will be able to pull versions of these scripts via:
 
 ```bash
-git 
+wget https://raw.githubusercontent.com/N-HEDGER/NEURO_PYTHON/master/FMRIPREP_SINGULARITY_SLURM/scripts/make_fmriprep_jobscript.py
+
+wget https://raw.githubusercontent.com/N-HEDGER/NEURO_PYTHON/master/FMRIPREP_SINGULARITY_SLURM/scripts/fmriprep_base.sh
+
 ```
 
-[fmriprep_base.sh](/scripts/fmriprep_base.sh) is a script that contains a template call to fmriprep using slurm.
+Or you can use git to clone the entire repository. 
+
+
+[fmriprep_base.sh](/FMRIPREP_SINGULARITY_SLURM/scripts/fmriprep_base.sh) is a script that contains a template call to fmriprep using slurm.
 
 You will see that the first few lines start with the prefix 'SBATCH'.
 
@@ -194,7 +200,7 @@ Here, we mount the relevant directories onto the singularity image, and specify 
 
 You will notice that throughout the script there are a series of placeholders enclosed within dashes '--- ----'.
 
-These placeholders will all be populated by the other script [make_fmriprep_jobscript.py](/scripts/make_fmriprep_jobscript.py).
+These placeholders will all be populated by the other script [make_fmriprep_jobscript.py](/FMRIPREP_SINGULARITY_SLURM/scripts/make_fmriprep_jobscript.py).
 
 In this script, we first specify the participant, or list of participants that are to be fmriprepped.
 

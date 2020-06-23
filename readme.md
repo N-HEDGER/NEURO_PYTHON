@@ -17,7 +17,7 @@ I have also provided some general readmes on why I like to use [python](/PYTHON)
 | --- | --- | --- | --- |
 | 1 | [Nipype_1](/NIPYPE/Nipype_1.ipynb) | An introduction to nipype with a minimal example. | *Placeholder* |
 | 2 | [Data_handling](/NILEARN_NIBABEL/Python_data_handling.ipynb) | An introduction to manipulating image volumes using nibabel and nilearn. | *Placeholder* |
-| 3 | [Using fmriprep & SLURM]() | A brief guide to using fmriprep on the computing cluster | *Placeholder* |
+| 3 | [Using fmriprep & SLURM](/FMRIPREP_SINGULARITY_SLURM) | A brief guide to using fmriprep on the computing cluster | *Placeholder* |
 | 4 | [Pycortex]() | A brief notebook that showcases the wonderful plotting functions of pycortex | *Placeholder* |
 
 ***

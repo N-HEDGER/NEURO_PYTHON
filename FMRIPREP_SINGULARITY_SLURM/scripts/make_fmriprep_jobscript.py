@@ -252,6 +252,7 @@ for PID in PIDS:
 		of.write(working_string)
 		of.close()
 
+	print('Job script written to' + '' + LPATH['jobscript_current_path'])
 	# Execute, or just write the file. 
 	
 	if EX['execute']:

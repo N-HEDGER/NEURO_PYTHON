@@ -100,7 +100,9 @@ Next, you will need to install the relevent templates that you need.
 
 At a minimum, you should install the OASIS30ANTs template, since fmriprep uses this as part of its workflow.
 
-In addition, you should install whatever output spaces you want your data sampled to. Here for instance, I grab an MNI template and fsaverage for outputing the data to surface space. 
+In addition, you should install whatever output spaces (i.e. anything you list under 'output_spaces' in your call to fmriprep) you want your data sampled to.
+
+ Here for instance, I grab an MNI template and fsaverage for outputing the data to surface space. 
 
 ```python
 
@@ -160,10 +162,9 @@ exit
 
 ### 5. Modify and run some version of my script.
 
+In the same directory downstream of this readme, you will find 2 scripts.
 
-In the same directory as this readme, you will find 2 scripts.
-
-You will be able to pull versions of these scripts via:
+You will be able to download versions of these scripts via:
 
 ```bash
 wget https://raw.githubusercontent.com/N-HEDGER/NEURO_PYTHON/master/FMRIPREP_SINGULARITY_SLURM/scripts/make_fmriprep_jobscript.py
@@ -172,7 +173,7 @@ wget https://raw.githubusercontent.com/N-HEDGER/NEURO_PYTHON/master/FMRIPREP_SIN
 
 ```
 
-Or you can use git to clone the entire repository. 
+Or, if you know what you are doing, you can use git to clone the entire repository. 
 
 
 [fmriprep_base.sh](/FMRIPREP_SINGULARITY_SLURM/scripts/fmriprep_base.sh) is a script that contains a template call to fmriprep using slurm.
@@ -194,7 +195,7 @@ This indicates that these lines are to be interpreted by slurm, our task manager
 Here, we specify the hardware that we want to run the task. For instance, we specify the number of cpus, the memory per cpu etc. etc..
 
 
-The line that begins with 'singularity run' is our call to fmriprep.
+The long line that begins with 'singularity run' is our call to fmriprep.
 
 Here, we mount the relevant directories onto the singularity image, and specify a bunch of execution options for fmriprep.
 
@@ -202,9 +203,32 @@ You will notice that throughout the script there are a series of placeholders en
 
 These placeholders will all be populated by the other script [make_fmriprep_jobscript.py](/FMRIPREP_SINGULARITY_SLURM/scripts/make_fmriprep_jobscript.py).
 
-In this script, we first specify the participant, or list of participants that are to be fmriprepped.
+In this script, we first specify the participant, or list of participants that are to be fmriprepped. This should correspond to real directories within your main BIDS directory.
 
-We then set a bunch of execution options, which will populate the SLURM elements of the template script shown above.
+
+```python
+####
+## Imports
+####
+
+import re
+import os
+
+
+####
+## Participant input.
+####
+
+# The participant identifiers in the BIDS directory (can be a list).
+PIDS=["02"]
+```
+
+One unique job script will be created for each participant, and so in principle, we should be able to run multiple participants in paralell (if the resources are available).
+
+
+We then set a bunch of execution options, which will populate the SLURM elements of the template script shown above. Currently, I am not sure whether these values make best use of the hardware. All I can tell you is that a call to fmriprep *works* with these values. I was able to complete a job (including fressurfer) in around 20 hours. I will need to do a bit more work to determine how best to use the resources available. 
+
+ 
 
 ```python
 ####
@@ -229,11 +253,13 @@ EX['memperCPU']='4G'
 EX['email']='nhedger1@gmail.com'
 ```
 
+Note that the default value of 'execute' is false. This means that a jobscript will be created, but not executed. This is useful for checking the script before submitting it. Conversely, if set to 'True' the job will immediately be sent to the scheduler on execution.  
 
-Next, we set local paths. All of these locations must exist on your system. This includes:
+
+Next, we set local paths. All of these locations *must be existing locations* on your system. This includes:
 
 1. The path to the singularity image
-2. The path to the directory where your templateflow templates are. 
+2. The path to the directory where your downloaded templateflow templates are. 
 3. The path to the template script
 4. The path to the directory for where you wish to produce the jobscript to be submitted to slurm.
 5. The path to the BIDS directory.
@@ -303,9 +329,9 @@ SPATH['B_output_path']='/output'
 
 Next, some mounts are created.
 
-1. We mount the templateflow directory
-2. We mount the freesurfer directory
-3. We mount the freesurfer license
+1. We mount the templateflow directory onto the image.
+2. We mount the freesurfer directory onto the image
+3. We mount the freesurfer license onto the image
 
 ```python
 MOUNTS={}
@@ -360,9 +386,100 @@ FMRIPREP['optionals']=['--write-graph','--ignore slicetiming', '--low-mem']
 FMRIPREP['optionals']=" ".join(FMRIPREP['optionals'])
 ```
 
-Finally, in the 'main loop' section (which I won't copy here), we loop through the list of participants and create participant specific working directories, output directories and job scripts.
+Finally, in the 'main loop' section, we loop through the list of participants and create some participant-specific working directories, output directories and job scripts.
 
-The terminal should print a message to indicate where your jobscript is located.
+```python
+for PID in PIDS:
+
+	#The path to the jobfile to be written
+	LPATH['jobscript_current_path']=os.path.join(LPATH['job_path'],'myjob_'+PID+'.sh')
+
+
+	# Force unique output directory for participant.
+	# This will need to be made into a real location.
+
+	if not os.path.isdir(os.path.join(LPATH['B_output_path'],PID,'derivatives')):
+		os.mkdir(os.path.join(LPATH['B_output_path'],PID))	
+		os.mkdir(os.path.join(LPATH['B_output_path'],PID,'derivatives'))
+	
+
+	LPATH['output_path']=os.path.join(LPATH['B_output_path'],PID,'derivatives')
+
+	SPATH['output_path']=os.path.join(SPATH['B_output_path'],PID,'derivatives')
+	
+
+	# Force unique working directory according to PID.
+	if not os.path.isdir(os.path.join(LPATH['B_work_path'],PID)):
+		os.mkdir(os.path.join(LPATH['B_work_path'],PID))
+	
+	LPATH['work_path']=os.path.join(LPATH['B_work_path'],PID)
+	SPATH['work_path']=os.path.join(SPATH['B_work_path'],PID)
+
+	# Mount the data in a distinct location.
+	SPATH['data_path']=os.path.join(SPATH['B_data_path'],PID)
+
+
+	# Now add the dynamic mounts
+	MOUNTS['dmount']= '-B ' + LPATH['data_path']+':'+SPATH['data_path']
+	MOUNTS['wmount']= '-B ' + LPATH['work_path']+':'+SPATH['work_path']
+	MOUNTS['omount']= '-B ' + LPATH['output_path']+':'+SPATH['output_path']
+
+	
+	# Join these mount commands altogether. 
+	MOUNTS['mounts']=[MOUNTS['dmount'],MOUNTS['wmount'],MOUNTS['tfmount'],MOUNTS['fslmount'],MOUNTS['omount']]
+	MOUNTS['mounts']=" ".join(MOUNTS['mounts'])
+
+
+	# Make unique error file for the participant (thanks Carolyn)
+	EX['errfile']=os.path.join(LPATH['job_path'],'myjob'+PID+'.err')
+
+
+	RE_dict =  {
+
+	'---cpus---':EX['cpus'],
+	'---memperCPU---':EX['memperCPU'],
+	'---email---':EX['email'],
+	'---errpath---':EX['errfile'],
+	'---tflow_path---':LPATH['tflow_path'],
+	'---mounts---':MOUNTS['mounts'],
+	'---imloc---':LPATH['im_path'],
+	'---data_base---':SPATH['data_path'],
+	'---outputpath---':SPATH['output_path'],
+	'---pid---':PID,
+	'---wpath---':SPATH['work_path'],
+	'---output_spaces---':FMRIPREP['output_spaces'],
+	'---mem_mb---':FMRIPREP['mem_mb'],
+	'---ot---':FMRIPREP['ot'],
+	'---nt---':FMRIPREP['nt'],
+	'---fsdir---':SPATH['fs_path'],
+	'---fsli---':SPATH['fsli_path'],
+	'---optionals---':FMRIPREP['optionals']
+	}
+	print(RE_dict)
+
+	jobscript = open(LPATH['jobscript_path'])
+	working_string = jobscript.read()
+	jobscript.close()
+
+
+
+	# Populate the template with the relevant information for this participant.
+	for e in RE_dict:
+		rS = re.compile(e)
+		working_string = re.sub(rS, RE_dict[e], working_string)
+		of = open(LPATH['jobscript_current_path'],'w')
+		of.write(working_string)
+		of.close()
+
+	print('Job script written to' + '' + LPATH['jobscript_current_path'])
+	# Execute, or just write the file. 
+	
+	if EX['execute']:
+		os.system(EX['execute_type'] + ' ' + LPATH['jobscript_current_path'])
+
+```
+
+The terminal should print a message to indicate that your jobscript has been saved in the desired location.
 
 
 **TBC**

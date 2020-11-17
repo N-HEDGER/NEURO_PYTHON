@@ -2,7 +2,7 @@
 
 # Welcome!
 
-Here I will host some notebooks for illustrating some useful tools for fmri data processing in python. 
+Here I will host some notebooks for illustrating some useful tools for fmri data processing in python.
 
 Additionally, this repo will also be be used to host some useful functions.
 

@@ -126,11 +126,6 @@ class bids:
             display=plotting.view_img(firstim)
         return display
 
-    def hi (self):
-
-        print ('hi')
-
-        return
 
     def getniftibits(self,npath):
         nifti = nib.load(npath)

@@ -122,8 +122,8 @@ class bids:
            display=plotting.view_img(npath)
         else:
             print ('>1 volume, plotting only the first for convenience')
-            firstim=image.index_img(npath, 0)
-            display=plotting.view_img(firstim)
+            firstim=image.index_img(npath, 0,bg_img=False)
+            display=plotting.view_img(firstim,bg_img=False)
         return display
 
 

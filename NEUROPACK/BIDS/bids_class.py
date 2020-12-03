@@ -2,12 +2,12 @@ import os.path as op
 from glob import glob
 import pandas as pd
 import nibabel as nib
-
+import os
 import nilearn
 from nilearn import image
 from nilearn import plotting
 import matplotlib.pyplot as plt
-
+from bids_validator import BIDSValidator
 
 class bids:
 
@@ -82,6 +82,16 @@ class bids:
                 if op.isdir(s)
             ]
 
+        # Check BIDS validity 
+        invalid = []
+        validator = BIDSValidator()
+        for path, subdirs, files in os.walk(self.path):
+            for file in files:
+                rel_path = os.path.relpath(path, self.path)
+                if validator.is_bids(os.path.join(rel_path, file)) == False:
+                    invalid.append(os.path.join(rel_path, file))
+        self.bids_invalid = invalid
+      
     # Prints everything out.
     def elaborate(self):
         print(self.submessage)

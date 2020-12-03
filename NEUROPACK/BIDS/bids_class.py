@@ -8,6 +8,7 @@ from nilearn import image
 from nilearn import plotting
 import matplotlib.pyplot as plt
 from bids_validator import BIDSValidator
+import warnings
 
 class bids:
 
@@ -91,6 +92,9 @@ class bids:
                 if validator.is_bids(os.path.join(rel_path, file)) == False:
                     invalid.append(os.path.join(rel_path, file))
         self.bids_invalid = invalid
+    
+        if invalid:
+            warnings.warn("One or more files does not conform to BIDS standard. See self.bids_invalid for a list of files.")
       
     # Prints everything out.
     def elaborate(self):
